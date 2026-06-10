@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MusculoSoma - Interactive Muscle Anatomy Learning Platform</title>
+  <meta name="description"
+    content="Explore interactive 3D muscle anatomy, study course slides, and test your knowledge with dynamic quizzes.">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="app-container">
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">
+          <i data-lucide="activity"></i>
+        </div>
+        <span class="brand-name">MusculoSoma</span>
+      </div>
+
+      <nav class="nav-menu">
+        <a href="#slides-notes" class="nav-item active" data-tab="slides-notes">
+          <i data-lucide="presentation"></i>
+          <span>Slides & Notes</span>
+        </a>
+        <a href="#model-explorer" class="nav-item" data-tab="model-explorer">
+          <i data-lucide="box"></i>
+          <span>3D Muscle Explorer</span>
+        </a>
+        <a href="#anatomy-quiz" class="nav-item" data-tab="anatomy-quiz">
+          <i data-lucide="award"></i>
+          <span>Anatomy Quiz</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div style="font-size: 11px; text-align: center; color: var(--text-muted);">
+          <span>MusculoSoma App</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+      <!-- Top Bar Header -->
+      <header class="top-bar">
+        <div class="header-brand-title">
+          <h2 style="font-family: var(--font-title); font-size: 18px; font-weight: 700;">Anatomy Portal</h2>
+        </div>
+
+        <div class="header-actions">
+          <div class="action-btn-circle" id="theme-toggle" title="Toggle Theme">
+            <i data-lucide="moon"></i>
+          </div>
+        </div>
+      </header>
+
+      <!-- View Containers -->
+      <div class="view-viewport">
+
+        <!-- View 1: Slides & Notes (Default Landing) -->
+        <section id="slides-notes" class="view-pane active">
+          <div class="view-header">
+            <div>
+              <h1 class="view-title">Lecture Slides</h1>
+              <p class="view-subtitle">Study the Muscular System Educational Presentation slides.</p>
+            </div>
+          </div>
+
+          <div class="slides-layout-full">
+            <div class="card slide-container-card-full"
+              style="height: calc(100vh - 180px); padding: 0; overflow: hidden; border-radius: 16px;">
+              <iframe src="pdf/Muscular System Educational Presentation.pdf" frameborder="0" class="pdf-iframe-view"
+                style="width: 100%; height: 100%; border: none;"></iframe>
+            </div>
+          </div>
+        </section>
+
+        <!-- View 2: 3D Muscle Explorer -->
+        <section id="model-explorer" class="view-pane">
+          <div class="view-header">
+            <div>
+              <h1 class="view-title">3D Muscle Explorer</h1>
+              <p class="view-subtitle">Rotate, zoom, and inspect the anatomical structure of the muscle systems.</p>
+            </div>
+            <div class="view-actions">
+              <span class="badge badge-success"><i data-lucide="zap"></i> Interactive 3D Model</span>
+            </div>
+          </div>
+
+          <div class="explorer-grid">
+            <!-- 3D Model Container -->
+            <div class="card model-card">
+              <div class="model-container-wrapper">
+                <!-- Embedding Sketchfab model provided by user -->
+                <div class="sketchfab-embed-wrapper" style="width: 100%; height: 100%;">
+                  <iframe title="Écorché Male Musclenames Anatomy" frameborder="0" allowfullscreen
+                    mozallowfullscreen="true" webkitallowfullscreen="true"
+                    allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking
+                    execution-while-out-of-viewport execution-while-not-rendered web-share
+                    src="https://sketchfab.com/models/33162ec759e04d2985dbbdf4ec908d66/embed"
+                    style="width: 100%; height: 100%; border-radius: 8px;"> </iframe>
+                </div>
+              </div>
+              <div class="model-instructions">
+                <i data-lucide="info"></i>
+                <span>Left-click + drag to rotate. Right-click + drag to pan. Scroll wheel to zoom. Click muscle labels
+                  to inspect names.</span>
+              </div>
+            </div>
+
+            <!-- Muscle Details Sidebar -->
+            <div class="card details-card">
+              <div class="card-header">
+                <h2 class="card-title">Muscle Anatomy Database</h2>
+              </div>
+              <div class="muscle-search-box">
+                <i data-lucide="search"></i>
+                <input type="text" placeholder="Filter muscles..." id="muscle-search-input">
+              </div>
+
+              <div class="muscle-list-container" id="muscle-list">
+                <!-- Muscle Cards will be populated dynamically by JS -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- View 3: Anatomy Quiz -->
+        <section id="anatomy-quiz" class="view-pane">
+          <div class="view-header">
+            <div>
+              <h1 class="view-title">Interactive Muscle Quiz</h1>
+              <p class="view-subtitle">Test your memory and analytical skills on muscle identification, origins,
+                insertions, and actions.</p>
+            </div>
+
+            <div class="quiz-timer-container">
+              <i data-lucide="timer"></i>
+              <span id="quiz-timer">00:00</span>
+            </div>
+          </div>
+
+          <!-- Quiz Landing Page -->
+          <div class="card quiz-card" id="quiz-start-screen">
+            <div class="quiz-start-banner">
+              <i data-lucide="graduation-cap"></i>
+            </div>
+            <h2>Muscular Anatomy Evaluation</h2>
+            <p>This assessment contains 10 interactive questions covering muscle structure, contraction mechanisms, and properties.</p>
+
+            <button class="btn btn-primary btn-lg" onclick="app.startQuiz()">
+              Begin Assessment <i data-lucide="play" style="margin-left: 8px;"></i>
+            </button>
+          </div>
+
+          <!-- Quiz Interactive Panel -->
+          <div class="card quiz-card hidden" id="quiz-active-screen">
+            <div class="quiz-progress-header">
+              <span class="quiz-question-num" id="quiz-progress-text">Question 1 of 10</span>
+              <div class="quiz-progress-bar">
+                <div class="quiz-progress-fill" id="quiz-progress-fill" style="width: 10%"></div>
+              </div>
+            </div>
+
+            <!-- Quiz Question Body -->
+            <div class="quiz-question-container" id="quiz-question-box">
+              <!-- JS will inject question layout here -->
+            </div>
+
+            <!-- Quiz Footer Controls -->
+            <div class="quiz-footer">
+              <button class="btn btn-secondary" id="quiz-prev-btn" onclick="app.prevQuizQuestion()">
+                <i data-lucide="chevron-left"></i> Previous
+              </button>
+
+              <button class="btn btn-primary" id="quiz-next-btn" onclick="app.nextQuizQuestion()">
+                Next <i data-lucide="chevron-right"></i>
+              </button>
+
+              <button class="btn btn-success hidden" id="quiz-submit-btn" onclick="app.submitQuizPrompt()">
+                Submit Assessment <i data-lucide="check-circle" style="margin-left: 8px;"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quiz Results Panel -->
+          <div class="card quiz-card hidden" id="quiz-results-screen">
+            <div class="results-summary" style="margin-bottom: 24px; text-align: center; width: 100%;">
+              <div class="modal-header-badge" style="margin-bottom: 12px;">
+                <i data-lucide="award" class="purple-glow" style="width: 32px; height: 32px;"></i>
+              </div>
+              <h2>Assessment Complete!</h2>
+              <p>Here is how you performed:</p>
+
+              <div class="modal-results-grid"
+                style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 24px auto; max-width: 480px; width: 100%;">
+                <div class="modal-res-box">
+                  <span class="m-label">Score</span>
+                  <h2 id="results-score-ratio">-- / 10</h2>
+                </div>
+                <div class="modal-res-box">
+                  <span class="m-label">Percentage</span>
+                  <h2 id="results-score-pct">--%</h2>
+                </div>
+                <div class="modal-res-box">
+                  <span class="m-label">Time Taken</span>
+                  <h2 id="results-time-taken">00:00</h2>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" style="margin-top: 24px;" onclick="app.resetQuizToStart()">
+              <i data-lucide="refresh-cw"></i> Retake Quiz
+            </button>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Custom Scripts -->
+  <script src="app.js"></script>
+</body>
+
+</html>
